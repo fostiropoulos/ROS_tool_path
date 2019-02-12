@@ -204,3 +204,8 @@ add_dependencies(generate_path_client tool_path_planning_gencpp)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+include_directories(/usr/local/include/eigen3)
+include_directories(/usr/local/include)
+
+link_directories(/usr/local/lib)
+include_directories(include)

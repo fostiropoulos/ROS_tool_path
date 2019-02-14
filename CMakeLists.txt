@@ -206,6 +206,24 @@ add_dependencies(generate_path_client tool_path_planning_gencpp)
 # catkin_add_nosetests(test)
 include_directories(/usr/local/include/eigen3)
 include_directories(/usr/local/include)
+include_directories(include)
+include_directories(include/tool_path_planning)
+
+set(UTLIB src/utilities.cpp
+	src/NPAM_utilities.cpp
+	src/file_rw.cpp
+	src/transformation_utilities.cpp)
+
+add_library(tool_path_planning STATIC ${UTLIB})
 
 link_directories(/usr/local/lib)
 include_directories(include)
+SET(CMAKE_CXX_FLAGS "-std=c++11 -O3")
+SET(EXEC generate_path_client)
+
+target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_iostreams.a)
+target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_system.a)
+target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_filesystem.a)
+target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libutil.a)
+target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_thread.a)
+target_link_libraries(${EXEC} pthread)

@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
+SET(CMAKE_CXX_FLAGS "-std=c++11 -O3")
 project(tool_path_planning)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
@@ -134,13 +135,24 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/tool_path_planning_node.cpp)
-add_executable(generate_path_server src/generate_path_server.cpp)
+include_directories(/usr/local/include/eigen3)
+include_directories(include/tool_path_planning)
+
+set(UTLIB src/utilities.cpp
+	src/NPAM_utilities.cpp
+	src/file_rw.cpp
+	src/transformation_utilities.cpp)
+
+
+add_executable(generate_path_server src/generate_path_server.cpp ${UTLIB})
 target_link_libraries(generate_path_server ${catkin_LIBRARIES})
 add_dependencies(generate_path_server tool_path_planning_gencpp)
 
 add_executable(generate_path_client src/generate_path_client.cpp)
 target_link_libraries(generate_path_client ${catkin_LIBRARIES})
 add_dependencies(generate_path_client tool_path_planning_gencpp)
+
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -204,26 +216,3 @@ add_dependencies(generate_path_client tool_path_planning_gencpp)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-include_directories(/usr/local/include/eigen3)
-include_directories(/usr/local/include)
-include_directories(include)
-include_directories(include/tool_path_planning)
-
-set(UTLIB src/utilities.cpp
-	src/NPAM_utilities.cpp
-	src/file_rw.cpp
-	src/transformation_utilities.cpp)
-
-add_library(tool_path_planning STATIC ${UTLIB})
-
-link_directories(/usr/local/lib)
-include_directories(include)
-SET(CMAKE_CXX_FLAGS "-std=c++11 -O3")
-SET(EXEC generate_path_client)
-
-target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_iostreams.a)
-target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_system.a)
-target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_filesystem.a)
-target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libutil.a)
-target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_thread.a)
-target_link_libraries(${EXEC} pthread)

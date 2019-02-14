@@ -1,9 +1,14 @@
 #include "ros/ros.h"
 #include "tool_path_planning/PathPlanningTask.h"
+#include "transformation_utilities.hpp"
+
 bool compute(tool_path_planning::PathPlanningTask::Request  &req,
          tool_path_planning::PathPlanningTask::Response &res)
 {
-  res.output = req.filename;
+
+  std::string filename=req.filename;
+  std::string output=rtf::generate_tool_path(filename);
+  res.output =output;
   ROS_INFO_STREAM("request: " <<  req.filename);
   ROS_INFO_STREAM("sending back response: " << res.output);
   return true;

@@ -1,7 +1,6 @@
 #include "ros/ros.h"
 #include "tool_path_planning/PathPlanningTask.h"
 #include <cstdlib>
-#include "tool_path_planning/transformation_utilities.hpp"
 
 int main(int argc, char **argv)
 {
